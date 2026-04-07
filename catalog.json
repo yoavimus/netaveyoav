@@ -1,0 +1,48 @@
+{
+  "brand": "NetaVeYoav",
+  "styles": [
+    { "id": "unisex_tshirt", "label": "Unisex T-Shirt" },
+    { "id": "long_sleeve", "label": "Long Sleeve" },
+    { "id": "womens_tshirt", "label": "Women's T-Shirt" },
+    { "id": "hoodie", "label": "Hoodie" }
+  ],
+  "colors": [
+    { "id": "black", "label": "Black", "hex": "#1a1a1a" },
+    { "id": "offwhite", "label": "Off-White", "hex": "#f5f0e8" },
+    { "id": "navy", "label": "Navy", "hex": "#1e2d5a" },
+    { "id": "white", "label": "White", "hex": "#ffffff" },
+    { "id": "gray", "label": "Gray", "hex": "#9ca3af" }
+  ],
+  "designs": [
+    {
+      "id": "design1",
+      "name": "Design 1",
+      "styles": ["unisex_tshirt", "long_sleeve", "womens_tshirt", "hoodie"],
+      "colors": ["black", "offwhite", "navy"]
+    },
+    {
+      "id": "design2",
+      "name": "Design 2",
+      "styles": ["unisex_tshirt", "womens_tshirt", "hoodie"],
+      "colors": ["black", "white", "gray"]
+    },
+    {
+      "id": "design3",
+      "name": "Design 3",
+      "styles": ["unisex_tshirt", "long_sleeve", "hoodie"],
+      "colors": ["black", "navy"]
+    },
+    {
+      "id": "design4",
+      "name": "Design 4",
+      "styles": ["unisex_tshirt", "womens_tshirt"],
+      "colors": ["offwhite", "white", "gray"]
+    },
+    {
+      "id": "design5",
+      "name": "Design 5",
+      "styles": ["unisex_tshirt", "long_sleeve", "womens_tshirt", "hoodie"],
+      "colors": ["black", "offwhite", "white", "navy", "gray"]
+    }
+  ]
+}
