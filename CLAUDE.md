@@ -24,6 +24,16 @@ Color IDs: `black`, `offwhite`, `navy`, `white`, `gray`
 
 When an image is missing, the UI shows a placeholder with the expected filename.
 
+## Local Dev
+
+Virtual env is at `.venv/`. Always activate before running Python:
+```
+.venv\Scripts\activate        # CMD / PowerShell
+source .venv/Scripts/activate # Git Bash
+```
+
+Then: `python main.py` → http://127.0.0.1:8000
+
 ## Model Strategy
 
 Inherited from global `~/.claude/CLAUDE.md`. Default: opusplan.
