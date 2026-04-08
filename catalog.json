@@ -1,5 +1,6 @@
 {
   "brand": "NetaVeYoav",
+  "sizes": ["S", "M", "L", "XL", "XXL"],
   "styles": [
     { "id": "unisex_tshirt", "label": "Unisex T-Shirt" },
     { "id": "long_sleeve", "label": "Long Sleeve" },

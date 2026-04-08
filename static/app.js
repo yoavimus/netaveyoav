@@ -1,3 +1,5 @@
+const PAYBOX_URL = 'https://links.payboxapp.com/mfGthuLma2b';
+
 async function loadCatalog() {
   const res = await fetch('/catalog.json');
   const data = await res.json();
@@ -22,6 +24,7 @@ function renderCatalog(data) {
     // State
     let selectedStyle = design.styles[0];
     let selectedColor = design.colors[0];
+    let selectedSize = data.sizes[0];
 
     function imageEl() {
       const src = getImagePath(design.id, selectedStyle, selectedColor);
@@ -30,7 +33,6 @@ function renderCatalog(data) {
       img.alt = `${design.name} - ${styleMap[selectedStyle]} in ${colorMap[selectedColor]?.label}`;
       img.className = 'product-image';
       img.onerror = () => {
-        // Fallback to placeholder
         const ph = document.createElement('div');
         ph.className = 'img-placeholder';
         ph.textContent = src.replace('/static/images/', '');
@@ -86,7 +88,6 @@ function renderCatalog(data) {
     const colorLabel = document.createElement('span');
     colorLabel.className = 'text-xs text-stone-400 mr-1';
     colorLabel.textContent = colorMap[selectedColor]?.label || selectedColor;
-
     colorWrap.appendChild(colorLabel);
 
     design.colors.forEach(colorId => {
@@ -106,8 +107,43 @@ function renderCatalog(data) {
       });
       colorWrap.appendChild(swatch);
     });
-
     info.appendChild(colorWrap);
+
+    // Size selector
+    const sizeWrap = document.createElement('div');
+    sizeWrap.className = 'flex flex-wrap gap-2';
+    data.sizes.forEach(size => {
+      const btn = document.createElement('button');
+      btn.className = 'style-btn' + (size === selectedSize ? ' selected' : '');
+      btn.textContent = size;
+      btn.addEventListener('click', () => {
+        selectedSize = size;
+        sizeWrap.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      sizeWrap.appendChild(btn);
+    });
+    info.appendChild(sizeWrap);
+
+    // Order button
+    const orderBtn = document.createElement('button');
+    orderBtn.className = 'order-btn mt-auto';
+    orderBtn.textContent = 'Order via Paybox';
+    orderBtn.addEventListener('click', () => {
+      const details = `${design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
+      navigator.clipboard.writeText(details).catch(() => {});
+      window.open(PAYBOX_URL, '_blank');
+
+      // Brief feedback on button
+      orderBtn.textContent = 'Copied! Opening Paybox...';
+      orderBtn.disabled = true;
+      setTimeout(() => {
+        orderBtn.textContent = 'Order via Paybox';
+        orderBtn.disabled = false;
+      }, 2500);
+    });
+    info.appendChild(orderBtn);
+
     card.appendChild(info);
     catalog.appendChild(card);
   });
