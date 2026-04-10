@@ -18,13 +18,13 @@
     {
       "id": "tapuz_sini",
       "name": "Tapuz Sini",
-      "styles": ["unisex_tshirt", "long_sleeve", "womens_tshirt", "hoodie"],
+      "styles": ["long_sleeve", "hoodie"],
       "colors": ["black", "offwhite", "navy"]
     },
     {
       "id": "asur_liktof",
       "name": "Asur Liktof",
-      "styles": ["unisex_tshirt", "womens_tshirt", "hoodie"],
+      "styles": ["unisex_tshirt", "womens_tshirt", "long_sleeve"],
       "colors": ["black", "offwhite", "gray"]
     },
     {
@@ -36,8 +36,8 @@
     {
       "id": "ain_hatov",
       "name": "Ain HaTov",
-      "styles": ["unisex_tshirt", "womens_tshirt"],
-      "colors": ["offwhite", "white", "gray"]
+      "styles": ["unisex_tshirt", "womens_tshirt", "long_sleeve"],
+      "colors": ["offwhite", "black", "gray"]
     },
     {
       "id": "ahava_kozevet",
