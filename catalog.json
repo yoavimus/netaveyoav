@@ -4,7 +4,7 @@
   "styles": [
     { "id": "unisex_tshirt", "label": "Unisex T-Shirt" },
     { "id": "long_sleeve", "label": "Long Sleeve" },
-    { "id": "womens_tshirt", "label": "Women's T-Shirt" },
+    { "id": "womens_tshirt", "label": "Women's T-Shirt, V neck" },
     { "id": "hoodie", "label": "Hoodie" }
   ],
   "colors": [
@@ -25,7 +25,7 @@
       "id": "asur_liktof",
       "name": "Asur Liktof",
       "styles": ["unisex_tshirt", "womens_tshirt", "hoodie"],
-      "colors": ["black", "white", "gray"]
+      "colors": ["black", "offwhite", "gray"]
     },
     {
       "id": "mutar_livkot",
