@@ -22,9 +22,13 @@ function renderCatalog(data) {
     card.className = 'bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden flex flex-col';
 
     // State
-    let selectedStyle = design.styles[0];
-    let selectedColor = design.colors[0];
+    let selectedStyle = design.styles[0].id;
+    let selectedColor = design.styles[0].colors[0];
     let selectedSize = data.sizes[0];
+
+    function colorsForStyle(styleId) {
+      return design.styles.find(s => s.id === styleId)?.colors || [];
+    }
 
     function imageEl() {
       const src = getImagePath(design.id, selectedStyle, selectedColor);
@@ -48,6 +52,33 @@ function renderCatalog(data) {
       else imgWrap.appendChild(next);
     }
 
+    function buildColorSwatches() {
+      colorWrap.innerHTML = '';
+
+      const colorLabel = document.createElement('span');
+      colorLabel.className = 'text-xs text-stone-400 mr-1';
+      colorLabel.textContent = colorMap[selectedColor]?.label || selectedColor;
+      colorWrap.appendChild(colorLabel);
+
+      colorsForStyle(selectedStyle).forEach(colorId => {
+        const color = colorMap[colorId];
+        if (!color) return;
+        const swatch = document.createElement('button');
+        swatch.className = 'color-swatch' + (colorId === selectedColor ? ' selected' : '');
+        swatch.setAttribute('data-color', colorId);
+        swatch.style.background = color.hex;
+        swatch.title = color.label;
+        swatch.addEventListener('click', () => {
+          selectedColor = colorId;
+          colorLabel.textContent = color.label;
+          colorWrap.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+          swatch.classList.add('selected');
+          updateImage();
+        });
+        colorWrap.appendChild(swatch);
+      });
+    }
+
     // Image area
     const imgWrap = document.createElement('div');
     imgWrap.className = 'p-4 pb-2';
@@ -67,14 +98,21 @@ function renderCatalog(data) {
     // Style selector
     const styleWrap = document.createElement('div');
     styleWrap.className = 'flex flex-wrap gap-2';
-    design.styles.forEach(styleId => {
+    design.styles.forEach(style => {
       const btn = document.createElement('button');
-      btn.className = 'style-btn' + (styleId === selectedStyle ? ' selected' : '');
-      btn.textContent = styleMap[styleId] || styleId;
+      btn.className = 'style-btn' + (style.id === selectedStyle ? ' selected' : '');
+      btn.textContent = styleMap[style.id] || style.id;
       btn.addEventListener('click', () => {
-        selectedStyle = styleId;
+        selectedStyle = style.id;
         styleWrap.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+
+        // Reset color to first available for this style
+        const available = colorsForStyle(selectedStyle);
+        if (!available.includes(selectedColor)) {
+          selectedColor = available[0];
+        }
+        buildColorSwatches();
         updateImage();
       });
       styleWrap.appendChild(btn);
@@ -84,29 +122,7 @@ function renderCatalog(data) {
     // Color selector
     const colorWrap = document.createElement('div');
     colorWrap.className = 'flex flex-wrap gap-2 items-center';
-
-    const colorLabel = document.createElement('span');
-    colorLabel.className = 'text-xs text-stone-400 mr-1';
-    colorLabel.textContent = colorMap[selectedColor]?.label || selectedColor;
-    colorWrap.appendChild(colorLabel);
-
-    design.colors.forEach(colorId => {
-      const color = colorMap[colorId];
-      if (!color) return;
-      const swatch = document.createElement('button');
-      swatch.className = 'color-swatch' + (colorId === selectedColor ? ' selected' : '');
-      swatch.setAttribute('data-color', colorId);
-      swatch.style.background = color.hex;
-      swatch.title = color.label;
-      swatch.addEventListener('click', () => {
-        selectedColor = colorId;
-        colorLabel.textContent = color.label;
-        colorWrap.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-        swatch.classList.add('selected');
-        updateImage();
-      });
-      colorWrap.appendChild(swatch);
-    });
+    buildColorSwatches();
     info.appendChild(colorWrap);
 
     // Size selector
@@ -134,7 +150,6 @@ function renderCatalog(data) {
       navigator.clipboard.writeText(details).catch(() => {});
       window.open(PAYBOX_URL, '_blank');
 
-      // Brief feedback on button
       orderBtn.textContent = 'Copied! Opening Paybox...';
       orderBtn.disabled = true;
       setTimeout(() => {

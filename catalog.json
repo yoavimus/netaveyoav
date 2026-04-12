@@ -5,45 +5,57 @@
     { "id": "unisex_tshirt", "label": "Unisex T-Shirt" },
     { "id": "long_sleeve", "label": "Long Sleeve" },
     { "id": "womens_tshirt", "label": "Women's T-Shirt, V neck" },
-    { "id": "hoodie", "label": "Hoodie" }
+    { "id": "oversize", "label": "Oversized T-Shirt" }
   ],
   "colors": [
     { "id": "black", "label": "Black", "hex": "#1a1a1a" },
+	{ "id": "white", "label": "White", "hex": "#ffffff" },
     { "id": "offwhite", "label": "Off-White", "hex": "#f5f0e8" },
     { "id": "navy", "label": "Navy", "hex": "#1e2d5a" },
-    { "id": "white", "label": "White", "hex": "#ffffff" },
+    { "id": "maroon", "label": "Maroon", "hex": "#800000" },
     { "id": "gray", "label": "Gray", "hex": "#9ca3af" }
   ],
   "designs": [
     {
       "id": "tapuz_sini",
       "name": "Tapuz Sini",
-      "styles": ["long_sleeve", "hoodie"],
-      "colors": ["black", "offwhite", "navy"]
+      "styles": [
+        { "id": "long_sleeve", "colors": ["black", "gray"] }
+      ]
     },
     {
       "id": "asur_liktof",
       "name": "Asur Liktof",
-      "styles": ["unisex_tshirt", "womens_tshirt", "long_sleeve"],
-      "colors": ["black", "offwhite", "gray"]
+      "styles": [
+        { "id": "unisex_tshirt", "colors": ["black", "offwhite"] },
+        { "id": "womens_tshirt", "colors": ["black", "gray"] },
+        { "id": "long_sleeve", "colors": ["gray", "black"] }
+      ]
     },
     {
       "id": "mutar_livkot",
       "name": "Mutar Livkot",
-      "styles": ["unisex_tshirt", "long_sleeve", "hoodie"],
-      "colors": ["black", "navy"]
+      "styles": [
+        { "id": "unisex_tshirt", "colors": ["black", "offwhite", "maroon"] },
+        { "id": "womens_tshirt", "colors": ["black", "gray", "white"] },
+        { "id": "long_sleeve", "colors": ["black", "gray"] }
+      ]
     },
     {
       "id": "ain_hatov",
       "name": "Ain HaTov",
-      "styles": ["unisex_tshirt", "womens_tshirt", "long_sleeve"],
-      "colors": ["offwhite", "black", "gray"]
+      "styles": [
+        { "id": "unisex_tshirt", "colors": ["offwhite", "black"] },
+        { "id": "womens_tshirt", "colors": ["black", "white"] },
+        { "id": "long_sleeve", "colors": ["black", "gray"] }
+      ]
     },
     {
       "id": "ahava_kozevet",
       "name": "Ahava Kozevet",
-      "styles": ["unisex_tshirt", "long_sleeve", "womens_tshirt", "hoodie"],
-      "colors": ["black", "offwhite", "white", "navy", "gray"]
+      "styles": [
+        { "id": "long_sleeve", "colors": ["black", "gray"] }
+      ]
     }
   ]
 }
