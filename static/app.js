@@ -6,8 +6,10 @@ async function loadCatalog() {
   renderCatalog(data);
 }
 
-function getImagePath(designId, styleId, colorId) {
-  return `/static/images/${designId}/${styleId}_${colorId}.jpg`;
+function getImagePath(designId, styleShort, colorId, suffix) {
+  const base = `${designId}_${styleShort}_${colorId}`;
+  const filename = suffix ? `${base}_${suffix}.jpg` : `${base}.jpg`;
+  return `/static/images/${designId}/${filename}`;
 }
 
 function renderCatalog(data) {
@@ -15,6 +17,7 @@ function renderCatalog(data) {
   catalog.innerHTML = '';
 
   const styleMap = Object.fromEntries(data.styles.map(s => [s.id, s.label]));
+  const styleShortMap = Object.fromEntries(data.styles.map(s => [s.id, s.short]));
   const colorMap = Object.fromEntries(data.colors.map(c => [c.id, c]));
 
   data.designs.forEach(design => {
@@ -23,19 +26,41 @@ function renderCatalog(data) {
 
     // State
     let selectedStyle = design.styles[0].id;
-    let selectedColor = design.styles[0].colors[0];
+    let selectedColor = getColorIds(design.styles[0].colors)[0];
     let selectedSize = data.sizes[0];
+    let imageIndex = 0;
+    let rotationTimer = null;
+
+    function getColorIds(colors) {
+      return colors.map(c => typeof c === 'string' ? c : c.id);
+    }
 
     function colorsForStyle(styleId) {
       return design.styles.find(s => s.id === styleId)?.colors || [];
     }
 
-    function imageEl() {
-      const src = getImagePath(design.id, selectedStyle, selectedColor);
+    // Returns array of suffixes, e.g. ["front","back"] or [null] for single image
+    function currentImages() {
+      const styleObj = design.styles.find(s => s.id === selectedStyle);
+      if (!styleObj?.images) return [null];
+      return styleObj.images;
+    }
+
+    function buildImageEl() {
+      const images = currentImages();
+      const suffix = images[imageIndex];
+      const src = getImagePath(design.id, styleShortMap[selectedStyle], selectedColor, suffix);
       const img = document.createElement('img');
       img.src = src;
       img.alt = `${design.name} - ${styleMap[selectedStyle]} in ${colorMap[selectedColor]?.label}`;
       img.className = 'product-image';
+      if (images.length > 1) img.style.cursor = 'pointer';
+      img.addEventListener('click', () => {
+        if (currentImages().length <= 1) return;
+        imageIndex = (imageIndex + 1) % currentImages().length;
+        refreshImage();
+        restartTimer();
+      });
       img.onerror = () => {
         const ph = document.createElement('div');
         ph.className = 'img-placeholder';
@@ -45,45 +70,61 @@ function renderCatalog(data) {
       return img;
     }
 
-    function updateImage() {
-      const current = card.querySelector('.product-image, .img-placeholder');
-      const next = imageEl();
+    function refreshImage() {
+      const current = imageContainer.querySelector('.product-image, .img-placeholder');
+      const next = buildImageEl();
       if (current) current.replaceWith(next);
-      else imgWrap.appendChild(next);
+      else imageContainer.appendChild(next);
+      updateDots();
     }
 
-    function buildColorSwatches() {
-      colorWrap.innerHTML = '';
-
-      const colorLabel = document.createElement('span');
-      colorLabel.className = 'text-xs text-stone-400 mr-1';
-      colorLabel.textContent = colorMap[selectedColor]?.label || selectedColor;
-      colorWrap.appendChild(colorLabel);
-
-      colorsForStyle(selectedStyle).forEach(colorId => {
-        const color = colorMap[colorId];
-        if (!color) return;
-        const swatch = document.createElement('button');
-        swatch.className = 'color-swatch' + (colorId === selectedColor ? ' selected' : '');
-        swatch.setAttribute('data-color', colorId);
-        swatch.style.background = color.hex;
-        swatch.title = color.label;
-        swatch.addEventListener('click', () => {
-          selectedColor = colorId;
-          colorLabel.textContent = color.label;
-          colorWrap.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-          swatch.classList.add('selected');
-          updateImage();
+    function updateDots() {
+      const images = currentImages();
+      dotsWrap.innerHTML = '';
+      if (images.length <= 1) return;
+      images.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'w-2 h-2 rounded-full transition-colors ' +
+          (i === imageIndex ? 'bg-stone-700' : 'bg-stone-300');
+        dot.addEventListener('click', () => {
+          imageIndex = i;
+          refreshImage();
+          restartTimer();
         });
-        colorWrap.appendChild(swatch);
+        dotsWrap.appendChild(dot);
       });
+    }
+
+    function restartTimer() {
+      clearInterval(rotationTimer);
+      if (currentImages().length <= 1) return;
+      rotationTimer = setInterval(() => {
+        imageIndex = (imageIndex + 1) % currentImages().length;
+        refreshImage();
+      }, 3000);
+    }
+
+    function onSelectionChange() {
+      imageIndex = 0;
+      refreshImage();
+      restartTimer();
     }
 
     // Image area
     const imgWrap = document.createElement('div');
     imgWrap.className = 'p-4 pb-2';
-    imgWrap.appendChild(imageEl());
+
+    const imageContainer = document.createElement('div');
+    imageContainer.appendChild(buildImageEl());
+    imgWrap.appendChild(imageContainer);
+
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'flex justify-center gap-1.5 mt-2';
+    updateDots();
+    imgWrap.appendChild(dotsWrap);
+
     card.appendChild(imgWrap);
+    restartTimer();
 
     // Info
     const info = document.createElement('div');
@@ -107,13 +148,12 @@ function renderCatalog(data) {
         styleWrap.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
 
-        // Reset color to first available for this style
-        const available = colorsForStyle(selectedStyle);
+        const available = getColorIds(colorsForStyle(selectedStyle));
         if (!available.includes(selectedColor)) {
           selectedColor = available[0];
         }
         buildColorSwatches();
-        updateImage();
+        onSelectionChange();
       });
       styleWrap.appendChild(btn);
     });
@@ -122,6 +162,33 @@ function renderCatalog(data) {
     // Color selector
     const colorWrap = document.createElement('div');
     colorWrap.className = 'flex flex-wrap gap-2 items-center';
+
+    function buildColorSwatches() {
+      colorWrap.innerHTML = '';
+      const colorLabel = document.createElement('span');
+      colorLabel.className = 'text-xs text-stone-400 mr-1';
+      colorLabel.textContent = colorMap[selectedColor]?.label || selectedColor;
+      colorWrap.appendChild(colorLabel);
+
+      getColorIds(colorsForStyle(selectedStyle)).forEach(colorId => {
+        const color = colorMap[colorId];
+        if (!color) return;
+        const swatch = document.createElement('button');
+        swatch.className = 'color-swatch' + (colorId === selectedColor ? ' selected' : '');
+        swatch.setAttribute('data-color', colorId);
+        swatch.style.background = color.hex;
+        swatch.title = color.label;
+        swatch.addEventListener('click', () => {
+          selectedColor = colorId;
+          colorLabel.textContent = color.label;
+          colorWrap.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+          swatch.classList.add('selected');
+          onSelectionChange();
+        });
+        colorWrap.appendChild(swatch);
+      });
+    }
+
     buildColorSwatches();
     info.appendChild(colorWrap);
 
@@ -149,7 +216,6 @@ function renderCatalog(data) {
       const details = `${design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
       navigator.clipboard.writeText(details).catch(() => {});
       window.open(PAYBOX_URL, '_blank');
-
       orderBtn.textContent = 'Copied! Opening Paybox...';
       orderBtn.disabled = true;
       setTimeout(() => {
