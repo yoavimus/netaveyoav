@@ -133,7 +133,8 @@ function renderCatalog(data) {
     // Name
     const name = document.createElement('h2');
     name.className = 'font-semibold text-base';
-    name.textContent = design.name;
+    name.dir = 'rtl';
+    name.textContent = design.name_he || design.name;
     info.appendChild(name);
 
     // Style selector
@@ -213,7 +214,7 @@ function renderCatalog(data) {
     orderBtn.className = 'order-btn mt-auto';
     orderBtn.textContent = 'Order via Paybox';
     orderBtn.addEventListener('click', () => {
-      const details = `${design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
+      const details = `${design.name_he || design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
       navigator.clipboard.writeText(details).catch(() => {});
       window.open(PAYBOX_URL, '_blank');
       orderBtn.textContent = 'Copied! Opening Paybox...';

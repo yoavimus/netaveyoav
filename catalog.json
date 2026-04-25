@@ -18,7 +18,8 @@
   "designs": [
     {
       "id": "tapuz_sini",
-      "name": "Tapuz Sini",
+      "name": "Tapuz Sini (Backside)",
+      "name_he": "תפוז סיני",
       "styles": [
         { "id": "long_sleeve", "colors": ["black", "gray"], "images": ["front", "back"] }
       ]
@@ -26,6 +27,7 @@
     {
       "id": "asur_liktof",
       "name": "Asur Liktof",
+      "name_he": "אסור לקטוף",
       "styles": [
         { "id": "unisex_tshirt", "colors": ["black", "offwhite"] },
         { "id": "womens_tshirt", "colors": ["black", "gray"] },
@@ -35,6 +37,7 @@
     {
       "id": "mutar_livkot",
       "name": "Mutar Livkot",
+      "name_he": "מותר לבכות",
       "styles": [
         { "id": "unisex_tshirt", "colors": ["black", "offwhite", "maroon"] },
         { "id": "womens_tshirt", "colors": ["black", "white", "gray"] },
@@ -44,6 +47,7 @@
     {
       "id": "ain_hatov",
       "name": "Ain HaTov",
+      "name_he": "אין הטוב",
       "styles": [
         { "id": "unisex_tshirt", "colors": ["black", "offwhite"] },
         { "id": "womens_tshirt", "colors": ["black", "white"] },
@@ -51,8 +55,9 @@
       ]
     },
     {
-      "id": "ahava_kozevet",
-      "name": "Ahava Kozevet",
+      "id": "ahava_nichzevet",
+      "name": "Ahava Nichzevet",
+      "name_he": "אהבה נכזבת",
       "styles": [
         { "id": "long_sleeve", "colors": ["black", "gray"], "images": ["front", "side"] }
       ]
