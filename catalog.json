@@ -19,7 +19,7 @@
     {
       "id": "tapuz_sini",
       "name": "Tapuz Sini (Backside)",
-      "name_he": "תפוז סיני",
+      "name_he": "תפוז סיני (הדפס גב)",
       "styles": [
         { "id": "long_sleeve", "colors": ["black", "gray"], "images": ["front", "back"] }
       ]
@@ -47,7 +47,7 @@
     {
       "id": "ain_hatov",
       "name": "Ain HaTov",
-      "name_he": "אין הטוב",
+      "name_he": "עין הטוב",
       "styles": [
         { "id": "unisex_tshirt", "colors": ["black", "offwhite"] },
         { "id": "womens_tshirt", "colors": ["black", "white"] },
