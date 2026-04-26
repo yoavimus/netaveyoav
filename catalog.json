@@ -40,7 +40,7 @@
       "name_he": "מותר לבכות",
       "styles": [
         { "id": "unisex_tshirt", "colors": ["black", "offwhite", "maroon"] },
-        { "id": "womens_tshirt", "colors": ["black", "white", "gray"] },
+        { "id": "womens_tshirt", "colors": ["black", "gray"] },
         { "id": "long_sleeve", "colors": ["black", "gray"] }
       ]
     },
