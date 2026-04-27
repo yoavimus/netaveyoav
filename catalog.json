@@ -2,10 +2,10 @@
   "brand": "NetaVeYoav",
   "sizes": ["S", "M", "L", "XL", "XXL"],
   "styles": [
-    { "id": "unisex_tshirt", "label": "Unisex T-Shirt", "short": "ut" },
-    { "id": "long_sleeve", "label": "Long Sleeve", "short": "ls" },
-    { "id": "womens_tshirt", "label": "Women's T-Shirt, V neck", "short": "wt" },
-    { "id": "oversize", "label": "Oversized T-Shirt", "short": "os" }
+    { "id": "unisex_tshirt", "label": "Unisex T-Shirt", "short": "ut", "price": 79 },
+    { "id": "long_sleeve", "label": "Long Sleeve", "short": "ls", "price": 99 },
+    { "id": "womens_tshirt", "label": "Women's T-Shirt, V neck", "short": "wt", "price": 79 },
+    { "id": "oversize", "label": "Oversized T-Shirt", "short": "os", "price": null }
   ],
   "colors": [
     { "id": "black", "label": "Black", "hex": "#1a1a1a" },

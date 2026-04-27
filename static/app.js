@@ -18,6 +18,7 @@ function renderCatalog(data) {
 
   const styleMap = Object.fromEntries(data.styles.map(s => [s.id, s.label]));
   const styleShortMap = Object.fromEntries(data.styles.map(s => [s.id, s.short]));
+  const priceMap = Object.fromEntries(data.styles.map(s => [s.id, s.price]));
   const colorMap = Object.fromEntries(data.colors.map(c => [c.id, c]));
 
   data.designs.forEach(design => {
@@ -155,6 +156,7 @@ function renderCatalog(data) {
         }
         buildColorSwatches();
         onSelectionChange();
+        orderBtn.textContent = orderBtnLabel();
       });
       styleWrap.appendChild(btn);
     });
@@ -210,9 +212,14 @@ function renderCatalog(data) {
     info.appendChild(sizeWrap);
 
     // Order button
+    function orderBtnLabel() {
+      const price = priceMap[selectedStyle];
+      return price != null ? `Order via Paybox · ₪${price}` : 'Order via Paybox';
+    }
+
     const orderBtn = document.createElement('button');
     orderBtn.className = 'order-btn mt-auto';
-    orderBtn.textContent = 'Order via Paybox';
+    orderBtn.textContent = orderBtnLabel();
     orderBtn.addEventListener('click', () => {
       const details = `${design.name_he || design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
       navigator.clipboard.writeText(details).catch(() => {});
