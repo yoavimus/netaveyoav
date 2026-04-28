@@ -4,6 +4,21 @@ async function loadCatalog() {
   const res = await fetch('/catalog.json');
   const data = await res.json();
   renderCatalog(data);
+  preloadImages(data);
+}
+
+function preloadImages(data) {
+  const shortMap = Object.fromEntries(data.styles.map(s => [s.id, s.short]));
+  data.designs.forEach(design => {
+    design.styles.forEach(style => {
+      const suffixes = style.images || [null];
+      style.colors.forEach(color => {
+        suffixes.forEach(suffix => {
+          new Image().src = getImagePath(design.id, shortMap[style.id], color, suffix);
+        });
+      });
+    });
+  });
 }
 
 function getImagePath(designId, styleShort, colorId, suffix) {
