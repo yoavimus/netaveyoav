@@ -18,6 +18,7 @@
   "designs": [
     {
       "id": "tapuz_sini",
+      "num": 1,
       "name": "Tapuz Sini (Backside)",
       "name_he": "תפוז סיני (הדפס גב)",
       "styles": [
@@ -26,6 +27,7 @@
     },
     {
       "id": "asur_liktof",
+      "num": 2,
       "name": "Asur Liktof",
       "name_he": "אסור לקטוף",
       "styles": [
@@ -36,6 +38,7 @@
     },
     {
       "id": "mutar_livkot",
+      "num": 3,
       "name": "Mutar Livkot",
       "name_he": "מותר לבכות",
       "styles": [
@@ -46,6 +49,7 @@
     },
     {
       "id": "ain_hatov",
+      "num": 4,
       "name": "Ain HaTov",
       "name_he": "עין הטוב",
       "styles": [
@@ -56,6 +60,7 @@
     },
     {
       "id": "ahava_nichzevet",
+      "num": 5,
       "name": "Ahava Nichzevet",
       "name_he": "אהבה נכזבת",
       "styles": [

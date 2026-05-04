@@ -236,7 +236,7 @@ function renderCatalog(data) {
     orderBtn.className = 'order-btn mt-auto';
     orderBtn.textContent = orderBtnLabel();
     orderBtn.addEventListener('click', () => {
-      const details = `${design.name_he || design.name} | ${styleMap[selectedStyle]} | ${colorMap[selectedColor]?.label} | ${selectedSize}`;
+      const details = `${styleShortMap[selectedStyle]} id:${design.num} ${selectedSize} ${selectedColor}`;
       navigator.clipboard.writeText(details).catch(() => {});
       window.open(PAYBOX_URL, '_blank');
       orderBtn.textContent = 'Copied! Opening Paybox...';
