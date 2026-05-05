@@ -117,7 +117,7 @@ function renderCatalog(data) {
       rotationTimer = setInterval(() => {
         imageIndex = (imageIndex + 1) % currentImages().length;
         refreshImage();
-      }, 3000);
+      }, 5000);
     }
 
     function onSelectionChange() {
