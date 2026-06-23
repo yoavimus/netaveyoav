@@ -1,5 +1,3 @@
-const PAYBOX_URL = 'https://links.payboxapp.com/mfGthuLma2b';
-
 async function loadCatalog() {
   const res = await fetch('/catalog.json');
   const data = await res.json();
@@ -33,7 +31,6 @@ function renderCatalog(data) {
 
   const styleMap = Object.fromEntries(data.styles.map(s => [s.id, s.label]));
   const styleShortMap = Object.fromEntries(data.styles.map(s => [s.id, s.short]));
-  const priceMap = Object.fromEntries(data.styles.map(s => [s.id, s.price]));
   const colorMap = Object.fromEntries(data.colors.map(c => [c.id, c]));
 
   data.designs.forEach(design => {
@@ -171,7 +168,6 @@ function renderCatalog(data) {
         }
         buildColorSwatches();
         onSelectionChange();
-        orderBtn.textContent = orderBtnLabel();
       });
       styleWrap.appendChild(btn);
     });
@@ -225,28 +221,6 @@ function renderCatalog(data) {
       sizeWrap.appendChild(btn);
     });
     info.appendChild(sizeWrap);
-
-    // Order button
-    function orderBtnLabel() {
-      const price = priceMap[selectedStyle];
-      return price != null ? `Order via Paybox · ₪${price}` : 'Order via Paybox';
-    }
-
-    const orderBtn = document.createElement('button');
-    orderBtn.className = 'order-btn mt-auto';
-    orderBtn.textContent = orderBtnLabel();
-    orderBtn.addEventListener('click', () => {
-      const details = `${styleShortMap[selectedStyle]} id:${design.num} ${selectedSize} ${selectedColor}`;
-      navigator.clipboard.writeText(details).catch(() => {});
-      window.open(PAYBOX_URL, '_blank');
-      orderBtn.textContent = 'Copied! Opening Paybox...';
-      orderBtn.disabled = true;
-      setTimeout(() => {
-        orderBtn.textContent = 'Order via Paybox';
-        orderBtn.disabled = false;
-      }, 2500);
-    });
-    info.appendChild(orderBtn);
 
     card.appendChild(info);
     catalog.appendChild(card);

@@ -51,28 +51,6 @@
   border-color: #1c1917;
 }
 
-/* Order button */
-.order-btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: 0.5rem;
-  background: #1c1917;
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
-}
-
-.order-btn:hover {
-  background: #44403c;
-}
-
-.order-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
 /* Placeholder image */
 .img-placeholder {
   width: 100%;
